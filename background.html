@@ -1,13 +1,17 @@
 <!doctype html>
 <head>
+	
+<script src="CloudFoundryClient.js"></script>
+	
 <script type="text/javascript">
 
 chrome.browserAction.onClicked.addListener(function() {
+	
 	var xhr = new XMLHttpRequest();
 	var jsonObject = { 'password' : 'xxxxxxx' }
 	var jsonString = JSON.stringify(jsonObject);
 
-//	xhr.open("GET", "https://api.cloudfoundry.com/info", true);
+	xhr.open("GET", "https://api.cloudfoundry.com/info", true);
 	xhr.open("POST", "https://api.cloudfoundry.com/users/userxsnajkaxnsjakmail/tokens", true);
 	xhr.onreadystatechange = function() {
 	    if (xhr.readyState == 4) {
@@ -21,6 +25,12 @@ chrome.browserAction.onClicked.addListener(function() {
 
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(jsonString);
+});
+
+chrome.extension.onRequest.addListener(function(request, sender, callback) {
+ 	var cloudurl = request.cloudurl;
+	var userid = request.userid;
+	var password = request.userpasswd;
 });
 
 </script>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+	
+<script type="text/javascript">
+	
+	function check(form) {
+		chrome.extension.sendRequest({ cloudurl: form.cloudurl.value, userid: form.userid.value, userpasswd: form.pswrd.value },
+	    	function(results) {
+	      	}
+		);
+	}
+
+</script>
+
+</head>
+<body>
+	
+	<h1>Cloud Foundry Login</h1>
+	<form name="login">
+		Cloud Foundry URL<input type="text" name="cloudurl"/>
+		Username<input type="text" name="userid"/>
+		Password<input type="password" name="pswrd"/>
+
+		<input type="button" onclick="check(this.form)" value="Login"/>
+		<input type="reset" value="Cancel"/>
+	</form>
+
+</body>
+</html>
