@@ -1,0 +1,19 @@
+{
+  "name": "CloudFoundry Chrome Extension",
+  "description": "prototyping Chrome Dev Tools extensions for Cloud Foundry",
+  "version": "0.1",
+  "background_page": "background.html",
+  "devtools_page": "devtools.html",
+  "browser_action": {
+    "default_icon": "cloud.png",
+    "default_title": "Cloud Foundry"
+  },
+  "permissions": [
+    "tabs",
+    "debugger",
+	"experimental",
+	"http://api.cloudfoundry.com/",
+	"https://api.cloudfoundry.com/",
+	"http://api.vcap.me/"
+  ]
+}

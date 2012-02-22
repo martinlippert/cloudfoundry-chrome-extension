@@ -1,0 +1,28 @@
+<!doctype html>
+<head>
+<script type="text/javascript">
+
+chrome.browserAction.onClicked.addListener(function() {
+	var xhr = new XMLHttpRequest();
+	var jsonObject = { 'password' : 'xxxxxxx' }
+	var jsonString = JSON.stringify(jsonObject);
+
+//	xhr.open("GET", "https://api.cloudfoundry.com/info", true);
+	xhr.open("POST", "https://api.cloudfoundry.com/users/userxsnajkaxnsjakmail/tokens", true);
+	xhr.onreadystatechange = function() {
+	    if (xhr.readyState == 4) {
+	        if (xhr.status==200){
+	            alert('success: ' + xhr.responseText);
+	        } else {
+	            alert('error: ' + xhr.statusText);
+	        }
+	    }
+	}
+
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.send(jsonString);
+});
+
+</script>
+</head>
+</html>
