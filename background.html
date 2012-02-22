@@ -31,6 +31,14 @@ chrome.extension.onRequest.addListener(function(request, sender, callback) {
  	var cloudurl = request.cloudurl;
 	var userid = request.userid;
 	var password = request.userpasswd;
+	
+	cloudfoundry = new CloudFoundryClient(cloudurl);
+	cloudfoundry.login(userid, password, function() {
+		callback({message: "successfully connected"});
+	}, function() {
+		callback({message: "error in connecting"});
+	});
+
 });
 
 </script>

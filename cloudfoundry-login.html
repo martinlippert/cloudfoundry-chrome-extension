@@ -6,11 +6,13 @@
 	
 	function check(form) {
 		chrome.extension.sendRequest({ cloudurl: form.cloudurl.value, userid: form.userid.value, userpasswd: form.pswrd.value },
-	    	function(results) {
-	      	}
-		);
+	    	loginCallback);
 	}
-
+	
+	loginCallback = function(loginResult) {
+		alert(loginResult.message);
+	}
+	
 </script>
 
 </head>
