@@ -5,12 +5,35 @@
 <script type="text/javascript">
 	
 	function check(form) {
-		chrome.extension.sendRequest({ cloudurl: form.cloudurl.value, userid: form.userid.value, userpasswd: form.pswrd.value },
+		chrome.extension.sendRequest({ action: "login", cloudurl: form.cloudurl.value, userid: form.userid.value, userpasswd: form.pswrd.value },
 	    	loginCallback);
 	}
 	
 	loginCallback = function(loginResult) {
 		alert(loginResult.message);
+		chrome.extension.sendRequest({ action: "getApplications"}, getAppsCallback);
+	}
+	
+	getAppsCallback = function(appsResult) {
+		if (appsResult.message) {
+			alert("Error in getting deployed apps: " + appsResult.message);			
+		}
+		else {
+			for (var i = 0; i < appsResult.length; i++) {
+				chrome.extension.sendRequest({ action: "getInstances", appName: appsResult[i].name}, getInstancesCallback);
+			}
+		}
+	}
+	
+	getInstancesCallback = function(instancesResult) {
+		if (instancesResult.message) {
+			alert("Error in getting deployed apps: " + instancesResult.message);			
+		}
+		else {
+			for (var i = 0; i < instancesResult.length; i++) {
+				console.out("Instance: " + instancesResult[i].name);
+			}
+		}
 	}
 	
 </script>

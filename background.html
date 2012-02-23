@@ -5,39 +5,34 @@
 	
 <script type="text/javascript">
 
-chrome.browserAction.onClicked.addListener(function() {
-	
-	var xhr = new XMLHttpRequest();
-	var jsonObject = { 'password' : 'xxxxxxx' }
-	var jsonString = JSON.stringify(jsonObject);
-
-	xhr.open("GET", "https://api.cloudfoundry.com/info", true);
-	xhr.open("POST", "https://api.cloudfoundry.com/users/userxsnajkaxnsjakmail/tokens", true);
-	xhr.onreadystatechange = function() {
-	    if (xhr.readyState == 4) {
-	        if (xhr.status==200){
-	            alert('success: ' + xhr.responseText);
-	        } else {
-	            alert('error: ' + xhr.statusText);
-	        }
-	    }
-	}
-
-	xhr.setRequestHeader("Content-type", "application/json");
-	xhr.send(jsonString);
-});
-
 chrome.extension.onRequest.addListener(function(request, sender, callback) {
- 	var cloudurl = request.cloudurl;
-	var userid = request.userid;
-	var password = request.userpasswd;
 	
-	cloudfoundry = new CloudFoundryClient(cloudurl);
-	cloudfoundry.login(userid, password, function() {
-		callback({message: "successfully connected"});
-	}, function() {
-		callback({message: "error in connecting"});
-	});
+	if (request.action == "login") {
+	 	var cloudurl = request.cloudurl;
+		var userid = request.userid;
+		var password = request.userpasswd;
+
+		cloudfoundry = new CloudFoundryClient(cloudurl);
+		cloudfoundry.login(userid, password, function() {
+			callback({message: "successfully connected"});
+		}, function(errorMessage) {
+			callback({message: "error logging in: " + errorMessage});
+		});
+	}
+	else if (request.action == "getApplications") {
+		cloudfoundry.getApplications(function(apps) {
+			callback(apps);
+		}, function(errorMessage) {
+			callback({message: "error in getting apps: " + errorMessage});
+		});
+	}
+	else if (request.action == "getInstances") {
+		cloudfoundry.getInstances(request.appName, function(instances) {
+			callback(instances);
+		}, function(errorMessage) {
+			callback({message: "error in getting instances: " + errorMessage});
+		});
+	}
 
 });
 
