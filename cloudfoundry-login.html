@@ -30,10 +30,28 @@
 			alert("Error in getting deployed apps: " + instancesResult.message);			
 		}
 		else {
-			for (var i = 0; i < instancesResult.length; i++) {
-				console.out("Instance: " + instancesResult[i].name);
+			for (var i = 0; i < instancesResult.instances.length; i++) {
+				insertLink(instancesResult.name, instancesResult.instances[i].index, instancesResult.instances[i].debug_port);
 			}
 		}
+	}
+	
+	insertLink = function(appName, instanceName, debugPort) {
+		div = document.getElementById('instances');
+
+		a = document.createElement('a');
+		a.innerText = 'Application: ' + appName + ' - Instance: ' + instanceName;
+		a.href = 'http://node-inspector.vcap.me/debug?port=' + debugPort;
+
+		div.appendChild(a);
+	}
+	
+	insertText = function(instance) {
+		div = document.getElementById('instances');
+
+		a = document.createTextNode('Application: ' + appName + ' - Instance: ' + instanceName);
+
+		div.appendChild(a);
 	}
 	
 </script>
@@ -50,6 +68,8 @@
 		<input type="button" onclick="check(this.form)" value="Login"/>
 		<input type="reset" value="Cancel"/>
 	</form>
+	
+	<div id="instances"></div>
 
 </body>
 </html>

@@ -28,6 +28,7 @@ chrome.extension.onRequest.addListener(function(request, sender, callback) {
 	}
 	else if (request.action == "getInstances") {
 		cloudfoundry.getInstances(request.appName, function(instances) {
+			instances.name = request.appName;
 			callback(instances);
 		}, function(errorMessage) {
 			callback({message: "error in getting instances: " + errorMessage});
