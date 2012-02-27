@@ -1,75 +1,22 @@
 <!doctype html>
 <html>
-<head>
+	<head>
+		<script src="CloudFoundryView.js"></script>
+	</head>
+	<body>
 	
-<script type="text/javascript">
-	
-	function check(form) {
-		chrome.extension.sendRequest({ action: "login", cloudurl: form.cloudurl.value, userid: form.userid.value, userpasswd: form.pswrd.value },
-	    	loginCallback);
-	}
-	
-	loginCallback = function(loginResult) {
-		alert(loginResult.message);
-		chrome.extension.sendRequest({ action: "getApplications"}, getAppsCallback);
-	}
-	
-	getAppsCallback = function(appsResult) {
-		if (appsResult.message) {
-			alert("Error in getting deployed apps: " + appsResult.message);			
-		}
-		else {
-			for (var i = 0; i < appsResult.length; i++) {
-				chrome.extension.sendRequest({ action: "getInstances", appName: appsResult[i].name}, getInstancesCallback);
-			}
-		}
-	}
-	
-	getInstancesCallback = function(instancesResult) {
-		if (instancesResult.message) {
-			alert("Error in getting deployed apps: " + instancesResult.message);			
-		}
-		else {
-			for (var i = 0; i < instancesResult.instances.length; i++) {
-				insertLink(instancesResult.name, instancesResult.instances[i].index, instancesResult.instances[i].debug_port);
-			}
-		}
-	}
-	
-	insertLink = function(appName, instanceName, debugPort) {
-		div = document.getElementById('instances');
+		<h1>Cloud Foundry Login</h1>
+		<form name="login">
+			Cloud Foundry URL<input type="text" name="cloudurl" value="http://api.vcap.me"/><p>
+			Username<input type="text" name="userid"/><p>
+			Password<input type="password" name="pswrd"/><p>
 
-		a = document.createElement('a');
-		a.innerText = 'Application: ' + appName + ' - Instance: ' + instanceName;
-		a.href = 'http://node-inspector.vcap.me/debug?port=' + debugPort;
-
-		div.appendChild(a);
-	}
+			<input type="button" onclick="check(this.form)" value="Login"/>
+			<input type="reset" value="Cancel"/><p>
+		</form>
 	
-	insertText = function(instance) {
-		div = document.getElementById('instances');
+		<div id="instances"></div>
 
-		a = document.createTextNode('Application: ' + appName + ' - Instance: ' + instanceName);
+	</body>
 
-		div.appendChild(a);
-	}
-	
-</script>
-
-</head>
-<body>
-	
-	<h1>Cloud Foundry Login</h1>
-	<form name="login">
-		Cloud Foundry URL<input type="text" name="cloudurl"/>
-		Username<input type="text" name="userid"/>
-		Password<input type="password" name="pswrd"/>
-
-		<input type="button" onclick="check(this.form)" value="Login"/>
-		<input type="reset" value="Cancel"/>
-	</form>
-	
-	<div id="instances"></div>
-
-</body>
 </html>
