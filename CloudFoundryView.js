@@ -4,8 +4,12 @@ function check(form) {
 }
 
 loginCallback = function(loginResult) {
-	alert(loginResult.message);
-	chrome.extension.sendRequest({ action: "getApplications"}, getAppsCallback);
+	if (loginResult.error) {
+		alert(loginResult.error);
+	}
+	else {
+		chrome.extension.sendRequest({ action: "getApplications"}, getAppsCallback);
+	}
 }
 
 getAppsCallback = function(appsResult) {

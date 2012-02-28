@@ -14,9 +14,9 @@ chrome.extension.onRequest.addListener(function(request, sender, callback) {
 
 		cloudfoundry = new CloudFoundryClient(cloudurl);
 		cloudfoundry.login(userid, password, function() {
-			callback({message: "successfully connected"});
+			callback({success: "successfully connected"});
 		}, function(errorMessage) {
-			callback({message: "error logging in: " + errorMessage});
+			callback({error: "error logging in: " + errorMessage});
 		});
 	}
 	else if (request.action == "getApplications") {
