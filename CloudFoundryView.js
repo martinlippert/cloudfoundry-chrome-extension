@@ -18,7 +18,9 @@ getAppsCallback = function(appsResult) {
 	}
 	else {
 		for (var i = 0; i < appsResult.length; i++) {
-			chrome.extension.sendRequest({ action: "getInstances", appName: appsResult[i].name}, getInstancesCallback);
+			if (appsResult[i].name !== 'node-inspector') {
+				chrome.extension.sendRequest({ action: "getInstances", appName: appsResult[i].name}, getInstancesCallback);
+			}
 		}
 	}
 }
